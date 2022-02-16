@@ -12,9 +12,14 @@ class LoginRouter {
     }
   }
 }
+
+const MakeSut = () => {
+  return new LoginRouter();
+};
+
 describe("Login Router", () => {
   it("should return 400 if no email is not provided", () => {
-    const sut = new LoginRouter();
+    const sut = MakeSut();
     const httpRequest = {
       body: {
         password: "any_password",
@@ -24,7 +29,7 @@ describe("Login Router", () => {
     expect(httpResponse.statusCode).toBe(400);
   });
   it("should return 400 if no password is not provided", () => {
-    const sut = new LoginRouter();
+    const sut = MakeSut();
     const httpRequest = {
       body: {
         password: "any_email@email.com",
@@ -34,7 +39,7 @@ describe("Login Router", () => {
     expect(httpResponse.statusCode).toBe(400);
   });
   it("should return 500 if no httpRequest is not provided", () => {
-    const sut = new LoginRouter();
+    const sut = MakeSut();
     const httpResponse = sut.route();
     expect(httpResponse.statusCode).toBe(500);
   });
