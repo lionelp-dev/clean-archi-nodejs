@@ -3,20 +3,22 @@ interface IHttpRequest {
   statusCode?: number;
   body?: { email?: String; password?: String };
 }
-interface IHttpResponse {
-  statusCode?: number;
-  body?: any;
-}
 export class LoginRouter {
-  async route(httpRequest?: IHttpRequest): Promise<any> {
+  authUseCase: any;
+  constructor(AuthUseCase: any) {
+    this.authUseCase = AuthUseCase;
+  }
+  async route(httpRequest?: any): Promise<any> {
     if (!httpRequest || !httpRequest.body) {
       return HttpResponse.internalServerError();
     }
-    if (!httpRequest.body.email) {
+    const { email, password } = httpRequest.body;
+    if (!email) {
       return HttpResponse.badRequest("email");
     }
-    if (!httpRequest.body.password) {
+    if (!password) {
       return HttpResponse.badRequest("password");
     }
+    this.authUseCase.auth(email, password);
   }
 }
