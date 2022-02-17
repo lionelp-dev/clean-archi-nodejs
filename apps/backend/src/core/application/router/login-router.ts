@@ -20,5 +20,6 @@ export class LoginRouter {
       return HttpResponse.badRequest("password");
     }
     this.authUseCase.auth(email, password);
+    return HttpResponse.unAuthorized();
   }
 }

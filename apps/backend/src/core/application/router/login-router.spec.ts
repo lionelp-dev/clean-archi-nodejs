@@ -70,4 +70,15 @@ describe("Login Router", () => {
     expect(AuthUseCase.email).toBe(httpRequest.body.email);
     expect(AuthUseCase.password).toBe(httpRequest.body.password);
   });
+  it("should return 401 when invalid credentials are provided", async () => {
+    const { sut } = MakeSut();
+    const httpRequest = {
+      body: {
+        email: "invalid_email@email.com",
+        password: "invalid_password",
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(401);
+  });
 });
