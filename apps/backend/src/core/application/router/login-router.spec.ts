@@ -63,7 +63,7 @@ describe("Login Router", () => {
     const httpRequest = {
       body: {
         email: "any_email@email.com",
-        password: "any_email@email.com",
+        password: "any_password",
       },
     };
     await sut.route(httpRequest);
