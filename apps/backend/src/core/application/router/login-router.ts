@@ -1,3 +1,4 @@
+import { access } from "fs";
 import { HttpResponse } from "../helpers/http-response";
 interface IHttpRequest {
   statusCode?: number;
@@ -24,7 +25,10 @@ export class LoginRouter {
     if (!password) {
       return HttpResponse.badRequest("password");
     }
-    this.authUseCase.auth(email, password);
-    return HttpResponse.unAuthorized();
+    const accessToken = this.authUseCase.auth(email, password);
+    if (!accessToken) {
+      return HttpResponse.unAuthorized();
+    }
+    return HttpResponse.ok();
   }
 }
