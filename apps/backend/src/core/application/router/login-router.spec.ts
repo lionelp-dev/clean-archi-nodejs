@@ -1,4 +1,4 @@
-import { MissingParamError } from "../helpers/missing-errors";
+import { MissingParamError } from "../helpers/missing-param-error";
 import { LoginRouter } from "./login-router";
 
 const MakeSut = () => {
