@@ -5,11 +5,11 @@ interface IHttpRequest {
 }
 export class LoginRouter {
   authUseCase: any;
-  constructor(AuthUseCase: any) {
+  constructor(AuthUseCase?: any) {
     this.authUseCase = AuthUseCase;
   }
   async route(httpRequest?: any): Promise<any> {
-    if (!httpRequest || !httpRequest.body) {
+    if (!httpRequest || !httpRequest.body || !this.authUseCase) {
       return HttpResponse.internalServerError();
     }
     const { email, password } = httpRequest.body;
