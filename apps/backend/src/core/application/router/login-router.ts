@@ -9,7 +9,12 @@ export class LoginRouter {
     this.authUseCase = AuthUseCase;
   }
   async route(httpRequest?: any): Promise<any> {
-    if (!httpRequest || !httpRequest.body || !this.authUseCase) {
+    if (
+      !httpRequest ||
+      !httpRequest.body ||
+      !this.authUseCase ||
+      !this.authUseCase.auth
+    ) {
       return HttpResponse.internalServerError();
     }
     const { email, password } = httpRequest.body;
