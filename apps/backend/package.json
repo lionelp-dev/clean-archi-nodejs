@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "testc": "cucumber-js src/features",
-    "test": " jest "
+    "test": " jest --silent --colors",
+    "test:unit": "pnpm test -- --watchAll",
+    "test:ci": "pnpm test -- --coverage"
   },
   "author": "",
   "license": "ISC",
