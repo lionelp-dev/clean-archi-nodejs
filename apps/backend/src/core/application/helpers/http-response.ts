@@ -19,9 +19,11 @@ export class HttpResponse {
       body: new UnAuthorizedError(),
     };
   }
-  static ok() {
+  static ok(data: any) {
+    console.log(data);
     return {
       statusCode: 200,
+      body: data,
     };
   }
 }

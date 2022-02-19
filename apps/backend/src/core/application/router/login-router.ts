@@ -1,9 +1,4 @@
-import { access } from "fs";
 import { HttpResponse } from "../helpers/http-response";
-interface IHttpRequest {
-  statusCode?: number;
-  body?: { email?: String; password?: String };
-}
 export class LoginRouter {
   authUseCase: any;
   constructor(AuthUseCase?: any) {
@@ -29,6 +24,6 @@ export class LoginRouter {
     if (!accessToken) {
       return HttpResponse.unAuthorized();
     }
-    return HttpResponse.ok();
+    return HttpResponse.ok({ accessToken });
   }
 }
