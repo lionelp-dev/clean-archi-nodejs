@@ -1,4 +1,5 @@
 import { MissingParamError } from "../helpers/missing-param-error";
+import { InternalServerError } from "../helpers/server-errorr";
 import { UnAuthorizedError } from "../helpers/unauthorized-error";
 import { LoginRouter } from "./login-router";
 
@@ -6,13 +7,14 @@ const MakeSut = () => {
   class AuthUseCaseSpy {
     email: string | undefined;
     password: string | undefined;
-    accessToken: string | undefined;
+    accessToken?: string | undefined;
     auth(email: string, password: string) {
       this.email = email;
       this.password = password;
       return this.accessToken;
     }
   }
+
   const authUseCaseSpy = new AuthUseCaseSpy();
   const sut = new LoginRouter(authUseCaseSpy);
   return {
@@ -50,16 +52,18 @@ describe("Login Router", () => {
 
   it("should return 500 if no httpRequest is not provided", async () => {
     const { sut } = MakeSut();
-
     const httpResponse = await sut.route();
+
     expect(httpResponse?.statusCode).toBe(500);
+    expect(httpResponse?.body).toEqual(new InternalServerError());
   });
 
   it("should return 500 if httpRequest has no body", async () => {
     const { sut } = MakeSut();
+    const httpResponse = await sut.route();
 
-    const httpResponse = await sut.route({});
     expect(httpResponse?.statusCode).toBe(500);
+    expect(httpResponse?.body).toEqual(new InternalServerError());
   });
 
   it("should return a AuthUseCase with correct params", async () => {
@@ -100,7 +104,7 @@ describe("Login Router", () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
-    expect(httpResponse.body.accessToken).toEqual(authUseCaseSpy.accessToken);
+    expect(httpResponse.body?.accessToken).toEqual(authUseCaseSpy.accessToken);
   });
 
   it("should return 500 when no AuthUseCase are provided", async () => {
@@ -113,6 +117,7 @@ describe("Login Router", () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse?.body).toEqual(new InternalServerError());
   });
 
   it("should return 500 if AuthUseCase has no auth method", async () => {
@@ -125,5 +130,6 @@ describe("Login Router", () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse?.body).toEqual(new InternalServerError());
   });
 });

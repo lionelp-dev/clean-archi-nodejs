@@ -1,16 +1,17 @@
-import { MissingParamError } from "./missing-param-error";
+import { InternalServerError } from "./server-errorr";
 import { UnAuthorizedError } from "./unauthorized-error";
 
 export class HttpResponse {
-  static badRequest(paramName: string) {
+  static badRequest(data: Error) {
     return {
       statusCode: 400,
-      body: new MissingParamError(paramName),
+      body: data,
     };
   }
   static internalServerError() {
     return {
       statusCode: 500,
+      body: new InternalServerError(),
     };
   }
   static unAuthorized() {
@@ -19,8 +20,7 @@ export class HttpResponse {
       body: new UnAuthorizedError(),
     };
   }
-  static ok(data: any) {
-    console.log(data);
+  static ok(data: object) {
     return {
       statusCode: 200,
       body: data,
