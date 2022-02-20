@@ -4,6 +4,15 @@ import { UnAuthorizedError } from "../helpers/unauthorized-error";
 import { LoginRouter } from "./login-router";
 
 const MakeSut = () => {
+  const authUseCaseSpy = makeAuthUseCaseSpy();
+  const sut = new LoginRouter(authUseCaseSpy);
+  return {
+    sut,
+    authUseCaseSpy,
+  };
+};
+
+const makeAuthUseCaseSpy = () => {
   class AuthUseCaseSpy {
     email: string | undefined;
     password: string | undefined;
@@ -14,19 +23,21 @@ const MakeSut = () => {
       return this.accessToken;
     }
   }
+  return new AuthUseCaseSpy();
+};
 
-  const authUseCaseSpy = new AuthUseCaseSpy();
-  const sut = new LoginRouter(authUseCaseSpy);
-  return {
-    sut,
-    authUseCaseSpy,
-  };
+const makeAuthUseCaseSpyWithError = () => {
+  class AuthUseCaseSpy {
+    auth() {
+      throw new Error();
+    }
+  }
+  return new AuthUseCaseSpy();
 };
 
 describe("Login Router", () => {
   it("should return 400 if no email is not provided", async () => {
     const { sut } = MakeSut();
-
     const httpRequest = {
       body: {
         password: "any_password",
@@ -39,7 +50,6 @@ describe("Login Router", () => {
 
   it("should return 400 if no password is not provided", async () => {
     const { sut } = MakeSut();
-
     const httpRequest = {
       body: {
         email: "any_email@email.com",
@@ -80,7 +90,8 @@ describe("Login Router", () => {
   });
 
   it("should return 401 when invalid credentials are provided", async () => {
-    const { sut, authUseCaseSpy } = MakeSut();
+    const { sut } = MakeSut();
+    const authUseCaseSpy = makeAuthUseCaseSpy();
     authUseCaseSpy.accessToken = undefined;
     const httpRequest = {
       body: {
@@ -121,7 +132,8 @@ describe("Login Router", () => {
   });
 
   it("should return 500 if AuthUseCase has no auth method", async () => {
-    const sut = new LoginRouter({});
+    const authUseCaseSpy = makeAuthUseCaseSpyWithError();
+    const sut = new LoginRouter(authUseCaseSpy);
     const httpRequest = {
       body: {
         email: "any_email@email.com",

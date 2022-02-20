@@ -1,20 +1,19 @@
 import { HttpResponse } from "../helpers/http-response";
 import { MissingParamError } from "../helpers/missing-param-error";
-export interface IHttpRequest {
-  body: { email?: string; password?: string };
-}
-interface IHttpResponse {
+
+interface IHttpRespose {
   statusCode: number;
-  body: { accessToken?: string } | any;
+  body: { accessToken: string } | any;
 }
 export class LoginRouter {
   authUseCase;
   constructor(authUseCase?: any) {
     this.authUseCase = authUseCase;
   }
-  async route(httpRequest: IHttpRequest): Promise<IHttpResponse> {
+  async route(httpRequest?: any): Promise<IHttpRespose> {
     try {
-      const { email, password } = httpRequest?.body;
+      const { email, password }: { email: string; password: string } =
+        httpRequest?.body;
       if (!email) {
         return HttpResponse.badRequest(new MissingParamError("email"));
       }
