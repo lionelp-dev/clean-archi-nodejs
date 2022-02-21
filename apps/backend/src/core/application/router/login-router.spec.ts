@@ -6,12 +6,12 @@ import { LoginRouter } from "./login-router";
 
 const MakeSut = () => {
   const authUseCaseSpy = makeAuthUseCaseSpy();
-  const emailValidator = makeEmailValidator();
-  const sut = new LoginRouter(authUseCaseSpy, emailValidator);
+  const emailValidatorSpy = makeEmailValidator();
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy);
   return {
     sut,
     authUseCaseSpy,
-    emailValidator,
+    emailValidatorSpy,
   };
 };
 
@@ -100,7 +100,6 @@ describe("Login Router", () => {
       },
     };
     await sut.route(httpRequest);
-    emailValidator;
     expect(authUseCaseSpy.email).toBe(httpRequest.body.email);
     expect(authUseCaseSpy.password).toBe(httpRequest.body.password);
   });
@@ -167,11 +166,35 @@ describe("Login Router", () => {
     const httpRequest = {
       body: {
         email: "invalid_email",
-        password: "password",
+        password: "any_password",
       },
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(400);
     expect(httpResponse?.body).toEqual(new InvalidParamError("email"));
+  });
+  it("should return 500 if no EmailValidatorl is provided", async () => {
+    const { authUseCaseSpy } = MakeSut();
+    const sut = new LoginRouter(authUseCaseSpy);
+    const httpRequest = {
+      body: {
+        email: "any_email@email.com",
+        password: "any_password",
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse?.statusCode).toBe(500);
+  });
+  it("should return 500 if an EmailValidatorl has no isValid method", async () => {
+    const { authUseCaseSpy } = MakeSut();
+    const sut = new LoginRouter(authUseCaseSpy, {});
+    const httpRequest = {
+      body: {
+        email: "any_email@email.com",
+        password: "any_password",
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse?.statusCode).toBe(500);
   });
 });
