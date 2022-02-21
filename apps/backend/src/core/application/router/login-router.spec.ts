@@ -16,15 +16,17 @@ const MakeSut = () => {
 };
 
 const makeEmailValidatorSpy = () => {
-  class emailValidatorSpy {
+  class EmailValidatorSpy {
     isEmailValid: boolean | undefined;
-    isValid() {
+    email: string | undefined;
+    isValid(email: string) {
+      this.email = email;
       return this.isEmailValid;
     }
   }
-  const emailValidator = new emailValidatorSpy();
-  emailValidator.isEmailValid = true;
-  return emailValidator;
+  const emailValidatorSpy = new EmailValidatorSpy();
+  emailValidatorSpy.isEmailValid = true;
+  return emailValidatorSpy;
 };
 
 const makeEmailValidatorWithError = () => {
