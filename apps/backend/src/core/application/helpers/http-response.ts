@@ -1,3 +1,4 @@
+import { InvalidParamError } from "./invalid-param-error ";
 import { InternalServerError } from "./server-errorr";
 import { UnAuthorizedError } from "./unauthorized-error";
 
@@ -6,6 +7,12 @@ export class HttpResponse {
     return {
       statusCode: 400,
       body: data,
+    };
+  }
+  static InvalidParamError() {
+    return {
+      statusCode: 400,
+      body: new InvalidParamError("email"),
     };
   }
   static internalServerError() {

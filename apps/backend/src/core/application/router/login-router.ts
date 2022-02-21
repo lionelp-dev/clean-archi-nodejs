@@ -1,4 +1,5 @@
 import { HttpResponse } from "../helpers/http-response";
+import { InvalidParamError } from "../helpers/invalid-param-error ";
 import { MissingParamError } from "../helpers/missing-param-error";
 
 interface IHttpRespose {
@@ -7,8 +8,10 @@ interface IHttpRespose {
 }
 export class LoginRouter {
   authUseCase;
-  constructor(authUseCase?: any) {
+  emailValidator;
+  constructor(authUseCase?: any, emailValidator?: any) {
     this.authUseCase = authUseCase;
+    this.emailValidator = emailValidator;
   }
   async route(httpRequest?: any): Promise<IHttpRespose> {
     try {
@@ -16,6 +19,9 @@ export class LoginRouter {
         httpRequest?.body;
       if (!email) {
         return HttpResponse.badRequest(new MissingParamError("email"));
+      }
+      if (!this.emailValidator.isValid()) {
+        return HttpResponse.badRequest(new InvalidParamError("email"));
       }
       if (!password) {
         return HttpResponse.badRequest(new MissingParamError("password"));
