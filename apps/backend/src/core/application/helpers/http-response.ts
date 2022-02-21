@@ -1,6 +1,8 @@
-import { InvalidParamError } from "./invalid-param-error ";
-import { InternalServerError } from "./server-errorr";
-import { UnAuthorizedError } from "./unauthorized-error";
+import {
+  InternalServerError,
+  InvalidParamError,
+  UnAuthorizedError,
+} from "../errors";
 
 export class HttpResponse {
   static badRequest(data: Error) {

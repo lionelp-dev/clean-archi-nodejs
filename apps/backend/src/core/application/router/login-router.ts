@@ -1,7 +1,5 @@
+import { InvalidParamError, MissingParamError } from "../errors";
 import { HttpResponse } from "../helpers/http-response";
-import { InvalidParamError } from "../helpers/invalid-param-error ";
-import { MissingParamError } from "../helpers/missing-param-error";
-
 interface IHttpRespose {
   statusCode: number;
   body: { accessToken: string } | any;

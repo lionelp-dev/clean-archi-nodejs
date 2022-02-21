@@ -1,7 +1,9 @@
-import { InvalidParamError } from "../helpers/invalid-param-error ";
-import { MissingParamError } from "../helpers/missing-param-error";
-import { InternalServerError } from "../helpers/server-errorr";
-import { UnAuthorizedError } from "../helpers/unauthorized-error";
+import {
+  InternalServerError,
+  InvalidParamError,
+  MissingParamError,
+  UnAuthorizedError,
+} from "../errors";
 import { LoginRouter } from "./login-router";
 
 const MakeSut = () => {
