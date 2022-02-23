@@ -11,10 +11,10 @@ export class HttpResponse {
       body: data,
     };
   }
-  static InvalidParamError() {
+  static InvalidParamError(paramName: string) {
     return {
       statusCode: 400,
-      body: new InvalidParamError("email"),
+      body: new InvalidParamError(paramName),
     };
   }
   static internalServerError() {

@@ -15,11 +15,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-app.get("/", function (req: Request, res: Response) {
+app.get("/", function (_req: Request, res: Response) {
   res.render("./views/index.njk");
 });
 
-app.get("/*", function (req: Request, res: Response) {
+app.get("/*", function (_req: Request, res: Response) {
   res.status(404).render("./views/404.njk");
 });
 

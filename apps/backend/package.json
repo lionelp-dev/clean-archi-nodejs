@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
-  "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "test": " jest --silent --colors",
-    "test:unit": "pnpm test -- --watchAll",
+    "test": " jest   --colors --noStackTrace --passWithNoTests --no-cache",
+    "test:unit": "pnpm test -- --watch",
+    "test:staged": "pnpm test ",
     "test:ci": "pnpm test -- --coverage"
   },
   "author": "",
@@ -26,7 +26,8 @@
   "dependencies": {
     "express": "^4.17.2",
     "nunjucks": "^3.2.3",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0"
   },
   "jest": {
     "transform": {
