@@ -1,4 +1,4 @@
-import { AuthUseCase } from "../../domain/usecases/AuthUseCase";
+import { AuthEntities } from "../../domain/entities/auth-entities";
 import {
   InvalidParamError,
   MissingParamError,
@@ -18,12 +18,12 @@ const makeSut = () => {
 };
 
 const makeAuthUseCase = () => {
-  class AuthUseCaseSpy implements AuthUseCase {
-    params: AuthUseCase.Params;
+  class AuthUseCaseSpy implements AuthEntities {
+    params: AuthEntities.Params;
     result = {
       accessToken: "any_access_token",
     };
-    async auth(params: AuthUseCase.Params): Promise<AuthUseCase.Result> {
+    async auth(params: AuthEntities.Params): Promise<AuthEntities.Result> {
       this.params = params;
       return this.result;
     }

@@ -1,4 +1,4 @@
-import { AuthUseCase } from "../../domain/usecases/AuthUseCase";
+import { AuthEntities } from "../../domain/entities/auth-entities";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { HttpResponse } from "../helpers/http-response";
 
@@ -17,7 +17,7 @@ export interface EmailValidator {
 }
 export class LoginRouter {
   constructor(
-    private readonly authUseCase: AuthUseCase,
+    private readonly authUseCase: AuthEntities,
     private readonly emailValidator: EmailValidator
   ) {}
   async route(
