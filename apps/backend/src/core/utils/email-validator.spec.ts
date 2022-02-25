@@ -1,13 +1,6 @@
-import isEmail from "validator/lib/isEmail";
+import { EmailValidator } from "./email-validator";
 
 const makeEmailValidator = () => {
-  class EmailValidator {
-    email: string | undefined;
-    isValid(email: string) {
-      this.email = email;
-      return isEmail(email);
-    }
-  }
   return new EmailValidator();
 };
 
